@@ -6,6 +6,7 @@ import From from '../components/From'
 import fetch from '../utils/fetch'
 import fetchJson from '../utils/fetch';
 import '../assets/banner.css'
+import Tab from '../components/Tab'
 class Banner extends Component {
     constructor(){
         super();
@@ -121,6 +122,12 @@ class Banner extends Component {
     render() {
         return (
             <div>
+                <Tab
+                  tabs={[
+                      {name:'banner管理',path:'/', selected:true},
+                      {name:'车辆管理',path:'/car'}
+                  ]}
+                />
                 <button type="button" className="btn btn-primary" onClick={this.showAddDialog}>添加</button>
                 <Table
                  fileds={[
