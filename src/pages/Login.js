@@ -5,6 +5,7 @@ import fetchJson from '../utils/fetch'
 import {connect} from 'react-redux'
 import  {setLogin} from '../actions'
 class Login extends Component {
+    
     async handleLogin() {
         const fromData = this.refs.loginFrom.getFromData();
         try {
@@ -13,6 +14,7 @@ class Login extends Component {
                 body:fromData
             })
             setLogin(true);
+            localStorage.isLogin = true;
             this.props.history.push('/');
         } catch (error) {
             alert('登录失败'+error)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import '../assets/from.css'
 class From extends Component {
 
     static propTypes = {
@@ -37,7 +38,7 @@ class From extends Component {
                     )
                 }):''
             }
-            <div className="form-group">
+            <div className="form-group form-btns">
                 {
                     this.props.btns ? this.props.btns.map((btn,index) => (
                         <button type="button" className={`btn ${btn.type === 'primary' ? 'btn-primary':'btn-default'}`} key={index} onClick={btn.onClick}>{btn.text}</button>

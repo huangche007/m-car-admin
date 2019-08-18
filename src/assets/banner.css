@@ -1,0 +1,9 @@
+.banner-img{
+    width: 80px;
+    height: 80px;
+}
+.bannder-delete-btns{
+    display: flex;
+    align-items: center;
+    justify-content: space-around; 
+}
