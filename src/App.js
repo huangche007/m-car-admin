@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import {Route,Redirect} from 'react-router-dom'
+import {connect} from 'react-redux'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Login from './pages/Login'
+import Banner from './pages/Banner'
+import Car from './pages/Car'
 class App extends Component {
   constructor(){
     super();
@@ -16,10 +20,17 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Login></Login>
+        {
+          this.props.adminReducer.isLogin ? '' :<Redirect to="/login" />
+        }
+        <Route path="/" exact component={Banner}/>
+        <Route path="/car"  component={Car}/>
+        <Route path="/login"  component={Login}/>
       </div>
     );
   }
 }
 
-export default App;
+export default connect((state,props) => Object.assign({},props,state),{
+
+})(App);

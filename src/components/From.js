@@ -27,7 +27,7 @@ class From extends Component {
         return (
          <form ref="from">
             {
-                this.props.fileds.map((filed,index) => {
+               this.props.fileds? this.props.fileds.map((filed,index) => {
                     let id = `id_${Math.floor(Math.random()*100000)}`
                     return(
                         <div className="form-group"key={index}>
@@ -35,13 +35,13 @@ class From extends Component {
                             <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} />
                         </div>
                     )
-                })
+                }):''
             }
             <div className="form-group">
                 {
-                    this.props.btns.map((btn,index) => (
+                    this.props.btns ? this.props.btns.map((btn,index) => (
                         <button type="button" className={`btn ${btn.type === 'primary' ? 'btn-primary':'btn-default'}`} key={index} onClick={btn.onClick}>{btn.text}</button>
-                    ))
+                    )):''
                 }
                
             </div>
