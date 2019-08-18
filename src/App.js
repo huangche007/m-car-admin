@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Banner from './pages/Banner'
 import Car from './pages/Car'
 import {setLogin} from './actions'
+import fetchJson from './utils/fetch'
 class App extends Component {
   constructor(){
     super();
@@ -13,11 +14,27 @@ class App extends Component {
       showDialog:true
     }
   }
-  componentDidMount(){
-    if(localStorage.isLogin){ //持久化登录状态->fake
-        setLogin(true);
-        this.props.history.push('/');
+
+  async checkLogin(){
+    if(this.props.location.pathname!=='/login'){
+      try {
+        if(!this.props.adminReducer.isLogin){
+          await fetchJson('admin/checklogin')
+          this.props.setLogin(true);
+        }
+       
+      } catch (error) {
+        this.props.history.push('/login');
+      }
     }
+  }
+
+  async componentDidUpdate(){
+    await this.checkLogin();
+  }
+
+  async componentDidMount(){
+    await this.checkLogin();
   }
   handleDialogClose = () => {
     this.setState({
@@ -27,9 +44,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        {
-          this.props.adminReducer.isLogin ? '' :<Redirect to="/login" />
-        }
         <Switch>
           <Route path="/" exact component={Banner}/>
           <Route path="/car"  component={Car}/>

@@ -13,8 +13,7 @@ class Login extends Component {
                 method:'POST',
                 body:fromData
             })
-            setLogin(true);
-            localStorage.isLogin = true;
+            this.props.setLogin(true);
             this.props.history.push('/');
         } catch (error) {
             alert('登录失败'+error)

@@ -10,19 +10,25 @@ class Banner extends Component {
     constructor(){
         super();
         this.state = {
-            datas:[]
+            datas:[],
+            isShowAddDialog:false,
+            isShowDeletDialog:false,
+            page:1,
+            totalPage:7,
+            modifyId:'',
+            isShowModifyDialog:false,
+            modifyTitle:'',
+            modifySubTitle:''
         }
     }
     async loadBannerList(){
         const data = await fetch('api/banner');
         this.setState({
-            datas:data,
-            isShowAddDialog:false,
-            isShowDeletDialog:false
+            datas:data
         })
     }
     async componentDidMount(){
-       this.loadBannerList();
+       await this.loadBannerList();
     }
     handleDelete(id){
         this.delete_id = id;
@@ -30,9 +36,44 @@ class Banner extends Component {
     }
 
     handleModify(id){
-       
+       let data = null;
+       this.state.datas.forEach((item) =>{
+           if(item.ID === id){
+             data = item;
+           }
+       }) 
+       this.setState({
+           modifyId:id,
+           modifyTitle:data.title,
+           modifySubTitle:data.sub_title
+       })
+       this.showModifyDialog();
     }
 
+    showModifyDialog = () => {
+        this.setState({
+            isShowModifyDialog:true
+        })
+    }
+    hideModifyDialog = () => {
+        this.setState({
+            isShowModifyDialog:false
+        })
+    }
+    async handleModifyConfirm(){
+        const editFrom = this.refs.editFrom.getFromData()
+        try {
+            await fetchJson(`api/banner/${this.state.modifyId}`,{
+                method:'POST',
+                body:editFrom
+            })
+            alert('修改成功')
+            this.hideModifyDialog();
+            this.loadBannerList();
+        } catch (error) {
+            
+        }
+    }
     showAddDialog = () => {
         this.setState({
             isShowAddDialog:true
@@ -57,7 +98,7 @@ class Banner extends Component {
         })
         alert('添加成功');
         this.hideAddDialog(); 
-        this.loadBannerList();
+       await this.loadBannerList();
     }
     showDeleteDialog = () => {
         this.setState({
@@ -137,7 +178,32 @@ class Banner extends Component {
                         </Dialog>
                     ):''
                 }                
-                <Page/>
+               {
+                    this.state.isShowModifyDialog ? (
+                        <Dialog
+                            shadow = {true}
+                            title = '编辑'
+                            close_btn={true}
+                            onClose = {this.hideModifyDialog}
+                        >
+                             <From
+                                ref="editFrom"
+                                fileds={[
+                                    {label:'标题',type:'text',placeholder:'请输入标题',name:'title',value:this.state.modifyTitle},
+                                    {label:'副标题',type:'text',placeholder:'请输入副标题',name:'sub_title',value:this.state.modifySubTitle},
+                                    {label:'图片',type:'file',name:'image'}
+                                ]}
+
+                                btns={[
+                                    {text:'确定',type:'primary',onClick:this.handleModifyConfirm.bind(this)},
+                                    {text:'取消',onClick:this.hideModifyDialog}
+                                ]}
+                            >
+
+                            </From>
+                        </Dialog>
+                    ):''
+                }
             </div>
         );
     }

@@ -33,7 +33,7 @@ class From extends Component {
                     return(
                         <div className="form-group"key={index}>
                             <label htmlFor={id}>{filed.label}</label>
-                            <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} />
+                            <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
                         </div>
                     )
                 }):''
