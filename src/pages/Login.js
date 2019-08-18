@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Dialog from '../components/Dialog'
 import From from '../components/From'
 import fetchJson from '../utils/fetch'
+import {connect} from 'react-redux'
+import  {setLogin} from '../actions'
 class Login extends Component {
     async handleLogin() {
         const fromData = this.refs.loginFrom.getFromData();
@@ -10,7 +12,8 @@ class Login extends Component {
                 method:'POST',
                 body:fromData
             })
-            alert('登录成功')
+            setLogin(true);
+            this.props.history.push('/');
         } catch (error) {
             alert('登录失败'+error)
         }
@@ -43,4 +46,6 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default connect((state,props) => Object.assign({},props,state),{
+    setLogin
+})(Login);
