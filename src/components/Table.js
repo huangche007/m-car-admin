@@ -44,7 +44,7 @@ class Table extends Component {
                                     <td>{data.ID}</td>
                                     {
                                         this.props.fileds.map((filed,fIndex) => (
-                                            <td key={fIndex}>{filed.name === 'image' ? <img className="banner-img" src={`http://localhost:8080/upload/${data[filed.name]}`}/>:data[filed.name]}</td>
+                                            <td key={fIndex} className="m-f">{filed.name === 'image' ? <img className="banner-img" src={`http://localhost:8080/upload/${data[filed.name]}`}/>:data[filed.name]}</td>
                                         ))
                                     }
                                     <td className="operate-btns">

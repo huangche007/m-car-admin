@@ -24,17 +24,17 @@ class Page extends Component {
             <nav>
                 <ul className="pagination">
                     <li>
-                    <a href="#" onClick={this.prev.bind(this)}>
+                    <a onClick={this.prev.bind(this)}>
                         <span>&laquo;</span>
                     </a>
                     </li>
                     {
                         Array.from(new Array(this.props.totalPage)).map((item,index)=>(
-                            <li key={index} className={this.props.currentPage === index+1 ? 'active':''}><a href="#" onClick={this.change.bind(this,index+1)}>{index+1}</a></li>
+                            <li key={index} className={this.props.currentPage === index+1 ? 'active':''}><a onClick={this.change.bind(this,index+1)}>{index+1}</a></li>
                         ))
                     }
                     <li>
-                    <a href="#" onClick={this.next.bind(this)}>
+                    <a onClick={this.next.bind(this)}>
                         <span>&raquo;</span>
                     </a>
                     </li>

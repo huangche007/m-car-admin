@@ -26,7 +26,7 @@ class Dialog extends Component {
                     {this.props.title}
                     {
                         this.props.close_btn ? (
-                            <a href="#" className="glyphicon glyphicon-remove pull-right" onClick={this.close}></a>
+                            <a className="glyphicon glyphicon-remove pull-right" onClick={this.close}></a>
                         ):''
                     }
                     </h2>
