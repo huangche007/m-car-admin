@@ -62,7 +62,7 @@ class From extends Component {
                             )
                         }else{
                             return(
-                                <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
+                                <input key={id} type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
                             )
                         }
                        
