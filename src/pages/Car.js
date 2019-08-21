@@ -61,16 +61,72 @@ class Car extends Component {
         await this.loadCarList(1);
 
     }
+    showAddDialog(){
+        this.setState({
+            isShowAddDialog:true
+        })
+    }
+    hideAddDialog = () => {
+        this.setState({
+            isShowAddDialog:false
+        })
+    }
+    confrimAddCarInfo(){
+
+    }
+
+    createFeature(arr){
+        let mresult = [];
+        if(arr && arr.length>0){
+            arr.forEach(str => {
+                mresult.push({name:'feature_name',type:'hidden',value:str})
+                mresult.push({name:'feature_value',type:'text',label:str})
+            });
+        }
+        
+        return mresult;
+    }
+
     render() {
         return (
             <div>
+               
                <Tab
                   tabs={[
                       {name:'banner管理',path:'/'},
                       {name:'车辆管理',path:'/car', selected:true}
                   ]}
                 />           
+                <button type="button" className="btn btn-primary" onClick={this.showAddDialog.bind(this)}>添加</button>
+                {
+                    this.state.isShowAddDialog ? (
+                        <Dialog
+                            shadow = {true}
+                            title = '添加'
+                            close_btn={true}
+                            onClose = {this.hideAddDialog}
+                        >
+                            <From
+                             fileds = {[
+                                 {name:'title',type:'text',label:'车辆名称',placeholder:'请输入名称'},
+                                 {name:'price',type:'number',label:'车辆价格',placeholder:'请输入价格'},
+                                 {name:'description',type:'text',label:'描述信息',placeholder:'请输入描述信息'},
+                                 {name:'images',type:'file',label:'车辆图片',placeholder:'请上传车辆图片',isArray:true},
+                                 ...this.createFeature(['上牌时间','表显里程','本车排量','变速箱','排放标准','车辆性质','车辆颜色',
+                                 '维修保养','年检到期','商业险到期','较强险到期','挡位个数','驱动方式','综合耗油','车身结构',
+                                 '发动机缸数','最大功率','进气类型'])
+                             ]}
 
+                             btns = {[
+                                 {type:'primary',text:'确定',onClick:this.confrimAddCarInfo.bind(this)},
+                                 {type:'',text:'取消',onClick:this.hideAddDialog}
+                             ]}
+                            >
+
+                            </From>
+                       </Dialog>
+                    ):''
+                }
                 <Table
                     fileds={[
                         {name:'title',text:'名称'},

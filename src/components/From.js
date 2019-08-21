@@ -7,6 +7,15 @@ class From extends Component {
         fileds:PropTypes.array.isRequired,
         btns:PropTypes.array.isRequired
     }
+
+
+    constructor(){
+        super()
+        this.state = {
+            counts:[]
+        }
+    }
+
     /**
      *
      *获取当前from表单元素
@@ -30,12 +39,35 @@ class From extends Component {
             {
                this.props.fileds? this.props.fileds.map((filed,index) => {
                     let id = `id_${Math.floor(Math.random()*100000)}`
-                    return(
-                        <div className="form-group"key={index}>
-                            <label htmlFor={id}>{filed.label}</label>
-                            <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
-                        </div>
-                    )
+                    if(filed.isArray){
+                        this.state.counts[filed.name] = this.state.counts[filed.name] || 10
+                        return(
+                            <div className="form-group"key={index}>
+                                <label>{filed.label}</label>
+                                {
+                                    Array.from(new Array(this.state.counts[filed.name])).map((f,inx) =>(
+                                        <input key={id+'_'+inx} type={filed.type} className="form-control" name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
+                                    ))
+                                }
+                                
+                            </div>
+                        )
+                    }else{
+                        if(filed.label){
+                            return(
+                                <div className="form-group"key={index}>
+                                    <label htmlFor={id}>{filed.label}</label>
+                                    <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
+                                </div>
+                            )
+                        }else{
+                            return(
+                                <input type={filed.type} className="form-control" id={id} name={filed.name} placeholder={filed.placeholder} defaultValue={filed.value}/>
+                            )
+                        }
+                       
+                    }
+                    
                 }):''
             }
             <div className="form-group form-btns">
