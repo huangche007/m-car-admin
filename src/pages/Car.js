@@ -15,7 +15,12 @@ class Car extends Component {
             datas:[],
             currentPage:1,
             pageCount:0,
-            del_id:''
+            del_id:'',
+            mod_id:'',
+            mod_title:'',
+            mod_price:0,
+            mod_description:''
+
         }
     }
 
@@ -71,8 +76,15 @@ class Car extends Component {
             isShowAddDialog:false
         })
     }
-    confrimAddCarInfo(){
-
+    async confrimAddCarInfo(){
+      const addCarFrom = this.refs.addCarFrom.getFromData();
+      await fetchJson('api/car',{
+        method:'POST',
+        body:addCarFrom
+      })
+      alert('添加成功');
+      this.hideAddDialog();
+      await this.loadCarList(this.state.currentPage)
     }
 
     createFeature(arr){
@@ -85,6 +97,42 @@ class Car extends Component {
         }
         
         return mresult;
+    }
+
+    async modifyCarInfo(id){
+        let car = null;
+        car = await fetchJson(`api/car/${id}`)
+        this.setState({
+            mod_id:id,
+            mod_title:car.title,
+            mod_price:car.price,
+            mod_description:car.description
+        })
+        this.handleShowModifyDialog();
+    }
+    
+
+    handleShowModifyDialog = () => {
+        this.setState({
+            isShowModifyDialog:true
+        })
+    }
+
+    handleHideModifyDialog = () => {
+        this.setState({
+            isShowModifyDialog:false
+        })
+    }
+
+    async confirmModifyCar(){
+        const modifyCarFromData = this.refs.modifyCar.getFromData();
+        await fetchJson(`api/car/${this.state.mod_id}`,{
+            method:'POST',
+            body:modifyCarFromData
+        })
+        alert('修改成功')
+        this.handleHideModifyDialog();
+        await this.loadCarList(this.state.currentPage)
     }
 
     render() {
@@ -105,8 +153,10 @@ class Car extends Component {
                             title = '添加'
                             close_btn={true}
                             onClose = {this.hideAddDialog}
+                            carDialog={1}
                         >
                             <From
+                             ref="addCarFrom"
                              fileds = {[
                                  {name:'title',type:'text',label:'车辆名称',placeholder:'请输入名称'},
                                  {name:'price',type:'number',label:'车辆价格',placeholder:'请输入价格'},
@@ -127,6 +177,30 @@ class Car extends Component {
                        </Dialog>
                     ):''
                 }
+                {
+                    this.state.isShowModifyDialog ? (
+                        <Dialog
+                          title="修改"
+                          shadow={true}
+                          close_btn = {true}
+                          onClose = {this.handleHideModifyDialog}
+                        >
+                            <From
+                            ref="modifyCar"
+                              fileds = {[
+                                {name:'title',type:'text',label:'车辆名称',placeholder:'请输入名称',value:this.state.mod_title},
+                                {name:'price',type:'number',label:'车辆价格',placeholder:'请输入价格',value:this.state.mod_price},
+                                {name:'description',type:'text',label:'描述信息',placeholder:'请输入描述信息',value:this.state.mod_description}
+                              ]}
+
+                              btns = {[
+                                {type:'primary',text:'确定',onClick:this.confirmModifyCar.bind(this)},
+                                {type:'',text:'取消',onClick:this.handleHideModifyDialog}
+                            ]}
+                            />
+                        </Dialog>
+                    ):''
+                }
                 <Table
                     fileds={[
                         {name:'title',text:'名称'},
@@ -136,7 +210,7 @@ class Car extends Component {
 
                     datas = {this.state.datas}
                     onDelete = {this.handleDelete.bind(this)}
-                    onModify = {(id) =>{}}
+                    onModify = {this.modifyCarInfo.bind(this)}
                 />  
 
                 {

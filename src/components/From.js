@@ -40,7 +40,7 @@ class From extends Component {
                this.props.fileds? this.props.fileds.map((filed,index) => {
                     let id = `id_${Math.floor(Math.random()*100000)}`
                     if(filed.isArray){
-                        this.state.counts[filed.name] = this.state.counts[filed.name] || 10
+                        this.state.counts[filed.name] = this.state.counts[filed.name] || 3
                         return(
                             <div className="form-group"key={index}>
                                 <label>{filed.label}</label>

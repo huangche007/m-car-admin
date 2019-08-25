@@ -31,7 +31,7 @@ class Dialog extends Component {
                     }
                     </h2>
                 </div>
-                <div className="panel-body">
+                <div className={['panel-body',this.props.carDialog && this.props.carDialog==1 ? 'dialog-content':''].join(' ')}>
                     {/* 弹窗内容 */}
                     {this.props.children}
                 </div>
