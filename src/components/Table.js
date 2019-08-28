@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import '../assets/table.css'
+import {BASE_UPLOAD} from '../utils/config'
 class Table extends Component {
     static propTypes = {
         fileds:PropTypes.array.isRequired,
@@ -44,7 +45,7 @@ class Table extends Component {
                                     <td>{data.ID}</td>
                                     {
                                         this.props.fileds.map((filed,fIndex) => (
-                                            <td key={fIndex} className="m-f">{filed.name === 'image' ? <img className="banner-img" src={`http://localhost:8080/upload/${data[filed.name]}`}/>:data[filed.name]}</td>
+                                            <td key={fIndex} className="m-f">{filed.name === 'image' ? <img className="banner-img" src={`${BASE_UPLOAD}${data[filed.name]}`}/>:data[filed.name]}</td>
                                         ))
                                     }
                                     <td className="operate-btns">
